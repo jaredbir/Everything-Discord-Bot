@@ -1,6 +1,7 @@
 import discord
+import asyncio
 
-client=discord.client()
+client=discord.Client()
 
 @client.event
 async def on_ready():
@@ -11,13 +12,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	if message.author == client.user:
-		return
-
 	if message.content.startswith('!everybody'):
-		msg = 'Hello beter'.format(message)
+		msg=""
+		for member in message.server.members:
+			msg+="<@"+str(member.id)+">\n"
 		await client.send_message(message.channel, msg)
-
-
-
-client.run('NDg1NzA0NzEwMjI2MDUxMDcy.Dm0n8w.mUAW9mrbm4H_6-FHVQ5AB7iiRb8')
+f=open("discord.key","r")
+key=f.readline()	
+client.run(key)
