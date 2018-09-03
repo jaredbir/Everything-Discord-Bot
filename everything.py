@@ -32,7 +32,7 @@ async def on_message(message):
 	if message.content.startswith('!everybody'):
 		for member in message.server.members:
 			msg+="<@"+str(member.id)+">\n"
-	elif message.content.startswith('!fortnite'):
+	
 
 	await client.send_message(message.channel, msg)
 		
