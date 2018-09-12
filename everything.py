@@ -11,6 +11,7 @@ import asyncio
 import logging
 import youtube_dl
 
+beter=False
 # Initializes and logs problems and errors that the code has, rather than to the console
 
 logger = logging.getLogger('discord')
@@ -38,9 +39,14 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-
-	await client.add_reaction(message, emoji="💦")
+	global beter
 	msg=""
+	if message.content.startswith('!turnoff'):
+		beter=False
+	if message.content.startswith('!turnon'):
+		beter=True
+	if beter==True:
+		await client.add_reaction(message, emoji="💦")
 	if message.content.startswith('!everybody'):
 		for member in message.server.members:
 			msg+="<@"+str(member.id)+">\n"
