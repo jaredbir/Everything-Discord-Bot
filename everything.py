@@ -47,7 +47,7 @@ async def on_message(message):
 		beter=True
 	if beter==True:
 		await client.add_reaction(message, emoji="💦")
-	if message.content.startswith('!everybody'):
+	if message.content.startswith('!everybody') || message.content.startswith('!everyone'):
 		for member in message.server.members:
 			msg+="<@"+str(member.id)+">\n"
 	if len(msg)!=0:
