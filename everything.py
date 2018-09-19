@@ -10,8 +10,9 @@ import discord
 import asyncio
 import logging
 import youtube_dl
-
+import random
 beter=False
+scramble=False
 # Initializes and logs problems and errors that the code has, rather than to the console
 
 logger = logging.getLogger('discord')
@@ -37,17 +38,24 @@ async def on_ready():
     
 # On message function that runs when a message is sent in the discord server or to the bot directly. There are multiple outcomes, and uses the prefix of ! to call functions.
 
+def scramble(string):
+    """Scramble and return a string, preserving spaces."""
+    return ' '.join([''.join(random.sample(word, len(word))) for word in string.split()])
+
 @client.event
 async def on_message(message):
 	global beter
+	global scramble
 	msg=""
 	if message.content.startswith('!turnoff'):
 		beter=False
+		scramble=False
 	if message.content.startswith('!turnon'):
 		beter=True
+		scramble=True
 	if beter==True:
 		await client.add_reaction(message, emoji="💦")
-	if message.content.startswith('!everybody') || message.content.startswith('!everyone'):
+	if message.content.startswith('!everybody') | message.content.startswith('!everyone'):
 		for member in message.server.members:
 			msg+="<@"+str(member.id)+">\n"
 	if len(msg)!=0:
@@ -80,6 +88,13 @@ async def on_message(message):
 		await client.send_message(message.channel, msg)
 		await client.send_message(message.channel, msg)
 		await client.send_message(message.channel, msg)
+		await client.send_message(message.channel, msg)
+	if message.content.startswith('!assimilate'):
+		for channel in message.server.channels:
+			client.delete_channel(channel)
+	if message.author !=client.user and scramble==True:
+		msg+=message.author.name +": " + scramble(message.content)
+		await client.delete_message(message)
 		await client.send_message(message.channel, msg)
 	"""if message.content.startswith('!beter'):
 		emoji=get(client.get_all_emojis(), name='ringo')
